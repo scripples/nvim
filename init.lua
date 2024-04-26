@@ -166,6 +166,7 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<c-s>', ':w<cr>', { desc = 'Write current buffer' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -518,6 +519,12 @@ require('lazy').setup({
               callback = vim.lsp.buf.clear_references,
             })
           end
+          if client and client.server_capabilities.inlayHintProvider then
+            vim.keymap.set('n', '<space>h', function()
+              local current_setting = vim.lsp.inlay_hint.is_enabled(event.buf)
+              vim.lsp.inlay_hint.enable(event.buf, not current_setting)
+            end, { desc = '[lsp] toggle inlay hints' })
+          end
         end,
       })
 
@@ -847,7 +854,7 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
