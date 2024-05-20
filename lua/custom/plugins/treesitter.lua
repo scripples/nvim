@@ -1,5 +1,8 @@
 return { -- Highlight, edit, and navigate code
   'nvim-treesitter/nvim-treesitter',
+  dependencies = {
+    { 'windwp/nvim-ts-autotag' },
+  },
   build = ':TSUpdate',
   opts = {
     ensure_installed = { 'bash', 'c', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'query', 'javascript', 'html', 'wgsl', 'solidity' },
@@ -16,7 +19,7 @@ return { -- Highlight, edit, and navigate code
   },
   config = function(_, opts)
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
+    opts.autopairs = { enable = true }
     ---@diagnostic disable-next-line: missing-fields
     require('nvim-treesitter.configs').setup(opts)
 
